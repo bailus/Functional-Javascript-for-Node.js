@@ -50,16 +50,6 @@ Functional.curry('a/b', 1)(2);
  → 0.5
 ```
 
-Run tests:
-``` bash
-$ node debugify.js -f ./tests.js
-```
-
-Run examples:
-``` bash
-$ node debugify.js -f ./examples.js
-```
-
 ## License 
 
 (The MIT License)
