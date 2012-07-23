@@ -11,8 +11,8 @@ For more details, see
  http://osteele.com/javascripts/functional
 
 ## Credits
- - Samuel Bailey <sam@bailey.geek.nz> -- node.js port
  - Oliver Steele -- original author
+ - Samuel Bailey <sam@bailey.geek.nz> -- node.js port
  - Dean Edwards -- Array.slice suggestion
  - henrah -- Function.lambda memoization
  - Raganwald -- Rhino compatibility
