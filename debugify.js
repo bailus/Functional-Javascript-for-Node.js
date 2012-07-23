@@ -5,60 +5,68 @@
  * Description: Javascript Debugify
  */
 
-var argv = require('optimist').
+var file, stringify, readSync, output, traces = [], tests = 0, passes = 0, addTrace, lines;
+
+//load optimist
+file = require('optimist').
   usage("Javascript Debugify\n\nUsage: $0 -f [file]").
   demand('f').
   describe('f', 'location of file eg. ./examples.js').
-  argv;
+  argv.f;
 
-var stringify = require('util').inspect; //this is what node's console.dir() uses to stringify
-var readSync = (function (f) { return function (x) { return f(x, 'utf-8'); }; })(require('fs').readFileSync);
+//this is what node's console.dir() uses to stringify
+stringify = require('util').inspect;
 
-var traces = [], tests = 0, passes = 0;
+//read a utf-8 file synchronously and return a string
+readSync = (function (f) { return function (x) { return f(x, 'utf-8'); }; })(require('fs').readFileSync);
 
-var addTrace = function (s) {
+//add a trace to the traces array
+//this function should only be called from one of the functions below (global.trace .etc)
+addTrace = function (s) {
 	var line = (new Error).stack.split("\n")[3].split(':')[1] || 0;
 	traces[line-1] = s;
 };
-global.trace = function (o) {
-	addTrace(' → ' + stringify(o));
-};
-global.assert = function (b) {
-	if (b) {
-		addTrace(' ✓ pass');
-		passes++;
-	}
-	else addTrace(' ✗ fail');
-	tests++;
-};
-global.assertEquals = function (a,b) {
-	if (stringify(a) === stringify(b)) {
-		addTrace(' ✓ pass');
-		passes++;
-	}
-	else addTrace(' ✗ fail');
-	tests++;
-};
-var output = console.log;
-global.console.log = global.trace;
-global.console.info = global.trace;
-global.console.debug = global.trace;
 
-var run = function (file) {
-	var lines = readSync(file).split("\n");
-	
-	require(file);
-	
-	for (i in lines) {
-		if (traces[i] !== undefined) {
-			output(lines[i]);
-			output(traces[i]);
-		}
-		else output(lines[i]);
+//these functions should only be called from the file we're running
+global.trace = function (object) {
+	addTrace(' → ' + stringify(object));
+};
+global.assert = function (boolean) {
+	if (boolean) {
+		addTrace(' ✓ pass');
+		passes++;
 	}
-	
-	if (tests) output(passes+'/'+tests+' tests passed.');
+	else addTrace(' ✗ fail');
+	tests++;
+};
+global.assertEquals = function (objectA, objectB) {
+	if (stringify(objectA) === stringify(objectB)) {
+		addTrace(' ✓ pass');
+		passes++;
+	}
+	else addTrace(' ✗ fail');
+	tests++;
+};
+console.trace = function (object) {
+	addTrace((new Error).stack);
+};
+
+//aliases for the functions above
+output = console.log; //duck punch console.*
+console.log = trace;
+console.info = trace;
+console.debug = trace;
+
+//run the file
+require(file);
+
+//output the source code and the traces array
+lines = readSync(file).split("\n");
+for (i in lines) {
+	output(lines[i]);
+	if (traces[i] !== undefined) output(traces[i]);
 }
 
-run(argv.f);
+//output totals
+if (tests) output(passes+'/'+tests+' tests passed.');
 
