@@ -8,6 +8,16 @@
  * Modified: 2007-07-12
  */
 
+// load functional-node.
+// note: this extends the String, Function and Array objects.
+var Functional = require('functional-node').load();
+
+// to load functional into the global namespace:
+// global.Functional = require('functional-node').load();
+
+// to inject the Functional.* methods directly into the global namespace:
+// require('functional-node').load().install();
+
 // ^ String lambdas
 
 // `lambda` creates a function from a string that contains a single
@@ -237,7 +247,7 @@ trace(replaceWithCoronalFricatives.call(str, /s/g));
 // string lambdas too:
 trace('+'.lambda().curry(1)(2));
 trace(curry('+', 1)(2));
-trace(bind('-> this', 1)());
+//   //trace(bind('-> this', 1)());
 
 // ^ Using Functional with Prototype
 
@@ -249,9 +259,9 @@ trace([1, 2, 3].map('x*x'.lambda()));
 trace([1, 2, 3].map('x*x'.lambda()).map('x+1'.lambda()));
 
 // Define an `onclick` function that abbreviates `Event.observe(_, 'click', ...)`:
-var onclick = Event.observe.bind(Event).partial(_, 'click');
+//   //var onclick = Event.observe.bind(Event).partial(_, 'click');
 // These next three statements have the same effect.  Click on a
 // of the buttons to execute the corresponding function.
-Event.observe('e1', 'click', function(){ alert('1'); });
-onclick('e2', function(){ alert('2'); });
-onclick('e3', alert.bind(null).saturate('3'));
+//   //Event.observe('e1', 'click', function(){ alert('1'); });
+//   //onclick('e2', function(){ alert('2'); });
+//   //onclick('e3', alert.bind(null).saturate('3'));
