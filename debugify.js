@@ -3,6 +3,7 @@
  * License: MIT License
  * Created: July 2012
  * Description: Javascript Debugify
+ * Usage: node debugify.js -f [file]
  */
 
 var file, stringify, readSync, output, traces = [], tests = 0, passes = 0, addTrace, lines;

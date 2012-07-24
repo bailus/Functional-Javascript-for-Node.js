@@ -1,9 +1,9 @@
 // Load functional
- var Functional = require('functional-node').load()
+ var F = require('functional-node').load()
 
 
 // I
- assertEquals(1, Functional.I(1))
+ assertEquals(1, F.I(1))
 
 
 // flip
@@ -21,12 +21,12 @@
 
 
 // Functional
- assertEquals(2, Functional.flip('a/b')(1, 2))
- assertEquals(0.5, Functional.curry('a/b', 1)(2))
+ assertEquals(2, F.flip('a/b')(1, 2))
+ assertEquals(0.5, F.curry('a/b', 1)(2))
 
 
 // install
- Functional.install()
+ F.install()
 
 
 // compose
@@ -60,8 +60,8 @@
 
 
 // not
- assertEquals(false, not(Functional.K(true))())
- assertEquals(true, not(Functional.K(false))())
+ assertEquals(false, not(F.K(true))())
+ assertEquals(true, not(F.K(false))())
 
 
 // invoke
