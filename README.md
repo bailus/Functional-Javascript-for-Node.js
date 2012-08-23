@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/bailus/functional-node.png)](http://travis-ci.org/bailus/functional-node)
 # functional-node
 functional-node is a port of the Functional Javascript library.
  https://github.com/bailus/functional-node
